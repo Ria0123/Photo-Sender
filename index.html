@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<head>
+		<title>Photo Sender</title>
+	</head>
+
+	<style>
+		.mySlides {display:none;}
+		.w3-left, .w3-right, .w3-badge {cursor:pointer}
+		.w3-badge {height:13px;width:13px;padding:0}
+	</style>
+
+	<!-- Guest user veiw of Web page -->
+	<div class="w3-bar w3-white">
+		<button class="w3-bar-item w3-button w3-hover-lightgray tablink w3-purple" onclick="OpenTab(event,'GuestViewSender')">Sender</button>
+		<button class="w3-bar-item w3-button w3-hover-lightgray tablink" onclick="OpenTab(event,'Login')">Login</button>
+	</div>
+
+		<!-- Guest user veiw of sender-->
+	<div id="GuestViewSender" class="w3-container w3-border Tab">	
+		<title>Photo Sender</title>
+			<!-- image size -->
+			<style>
+				img { max-width: 300px; max-height: 300px; margin: 10px; border: 1px solid black; }
+			</style>
+		</head>
+
+		<body style="background-color:slateblue;">
+
+			<!-- font size + Greeting -->
+			<h1 style="font: 35px Courier New; color:white; font: 30px Lucida Handwriting, cursive; border: 4px solid white;"> Welcome to Photo Sender! Follow the instuctions below...</h1>
+	
+			<!-- Info Paragraph -->
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Welcome! Select a picture or pictures from your photo album you wish to send.</p>
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Click the "Upload" button when you are ready to send the photo or photos.</p>
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Please ignore the login option, as it is reserved for the administrator.</p>
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Thank you for using Photo Sender! Have a Wonderful day!</p>
+
+
+			<!-- Photo Submiter -->
+			<div class="w3-display-bottommiddle w3-large w3-container w3-padding-16 w3-white">
+				<form method="post" enctype="multipart/form-data">
+					<label for="all_photo">Choose a photo:</label>
+					<input type="file" id="all_photo" name="photo" accept="image/*" required>
+					<input type="submit" value="Upload">
+				</form> 
+
+				<!-- Dictionary for all photos-->
+				<script> 
+					// Get the dictionary of uploaded photos from the server
+					fetch('/all_photos')
+						.then(response => response.json()) 
+						.then(photos => { 
+			
+						// Display each photo in the dictionary 
+						for (let fileName in all_photos) { 
+							let data = all_photos[fileName]; 
+							let url = `data:image/jpeg;base64,${data}`;
+							let img = document.createElement('img'); 
+							img.src= url;
+							document.getElementById('all_photos').appendChild(img); 
+						} 
+					}); 
+				</script>
+			</div>
+		</body>	
+	</div>
+
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+
+<div id="Login" class="w3-container w3-border Tab" style="display:none">
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <center>
+      <h3 style="color:white; font: 20px Lucida Handwriting, cursive;">Login Here :</h3>
+
+      <form action="" class="form" method="POST">
+        <div class="input-group">
+          <label style="color:white; font: 18px Lucida Handwriting, cursive;" for="username">Username</label>
+          <input type="text" id="username" name="username" required/><br><br>
+        </div>
+        <div class="input-group">
+          <label style="color:white; font: 18px Lucida Handwriting, cursive;" for="passwordlogin">Password</label>
+          <input type="password" id="password" name="password" required/><br><br>
+        </div>
+
+        <input style="color:black; font: 14px Lucida Handwriting, cursive;" type="submit" value="Login" class="submit-button"/>
+      </form>
+<!-- Registeration for future projects
+      <form>
+        <table>
+          <tr>
+            <td style="color:white; font: 16px Lucida Handwriting, cursive;">Don't have a login? <a href="register.html">Register Here</a></td>
+          </tr>
+        </table>
+      </form>
+-->    
+    </center>
+
+    <script>
+      function auth(username, password) {
+        if (username === 'Ria' && password === '#Ria_Admin2533') {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+
+      // Check if the form has been submitted
+      if (window.location.href.indexOf("admin_PhotoSender.html") === -1 && document.querySelector('.form') !== null) {
+        document.querySelector('.form').addEventListener('submit', function (event) {
+          event.preventDefault();
+          // Get the username and password from the form data
+          var username = document.getElementById('username').value;
+          var password = document.getElementById('password').value;
+          // Check if the username and password are correct using the auth() function
+          if (auth(username, password)) {
+            // If the credentials are correct, redirect to the dashboard page
+            window.location.href = "admin_PhotoSender.html";
+            alert("Login Successful");
+          }
+          else {
+            // If the credentials are incorrect, show an error message
+            alert("Invalid username or password.");
+          }
+        });
+      }
+    </script>
+  </body>
+</div>
+
+	<!-- hides tabs + colors selected tab -->
+	<script>
+	function OpenTab(evt, tabName) {
+	  var i, x, tablinks;
+  	x = document.getElementsByClassName("Tab");
+  	for (i = 0; i < x.length; i++) {
+	    x[i].style.display = "none";
+  	}
+ 	 tablinks = document.getElementsByClassName("tablink");
+  	for (i = 0; i < x.length; i++) {
+    	tablinks[i].className = tablinks[i].className.replace(" w3-purple", "");
+  	}
+ 	 document.getElementById(tabName).style.display = "block";
+  	evt.currentTarget.className += " w3-purple";
+	}
+	</script>
+</html>

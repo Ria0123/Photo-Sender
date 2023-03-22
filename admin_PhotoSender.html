@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<head>
+	<title>Photo Sender</title>
+</head>
+
+<style>
+	.mySlides {display:none;}
+	.w3-left, .w3-right, .w3-badge {cursor:pointer}
+	.w3-badge {height:13px;width:13px;padding:0}
+</style>
+
+<!-- Tab buttons -->
+<div class="w3-bar w3-white">
+	
+	<button class="w3-bar-item w3-button w3-hover-lightgray tablink w3-purple" onclick="OpenTab(event,'Slides')">Photo Slides</button>
+	<button class="w3-bar-item w3-button w3-hover-lightgray tablink" onclick="OpenTab(event,'Sender')">Sender</button>
+	<button class="w3-bar-item w3-button w3-hover-lightgray tablink" onclick="OpenTab(event,'Photos')">All Photos</button>
+	<button class="w3-bar-item w3-button w3-hover-lightgray tablink" onclick="OpenTab(event,'GuestViewSender')">Back to Guest View</button>
+</div>
+
+<!-- Slides with photos -->
+<div id="Slides" class="w3-container w3-border Tab"> 	
+	<body style="background-color:slateblue;">
+		<h1 style="font: 35px Courier New; color:white; border: 4px solid white;">Photo Slides</h1>
+
+	<!-- Display uploaded photos for 'All photos' here -->
+		<div id="slide_photos">
+		
+		</div>
+
+		<!-- Dictionary for photos in slide-->
+				<script> 
+					// Get the dictionary of uploaded photos from the server
+					fetch('/slide_photos')
+						.then(response => response.json()) 
+						.then(photos => { 
+			
+						// Display each photo in the dictionary 
+						for (let fileName in slide_photos) { 
+							let data = slide_photos[fileName]; 
+							let url = `data:image/jpeg;base64,${data}`;
+							let img = document.createElement('img'); 
+							img.src= url;
+							document.getElementById('slide_photos').appendChild(img); 
+						} 
+					}); 
+				</script>
+
+		<!-- math to cycle through the photos  -->
+		<script>
+			var myIndex = 0;
+			carousel();
+			function carousel() {
+				var i;
+				var x = document.getElementsByClassName("mySlides");
+				for (i = 0; i < x.length; i++) {
+					x[i].style.display = "none";  
+				}
+				myIndex++;
+				if (myIndex > x.length) {myIndex = 1}
+					x[myIndex-1].style.display = "block";
+					setTimeout(carousel, 5000); 
+					// Change image every 5 seconds
+				}
+		</script>
+	</body>	
+</div>
+
+<!-- Photo Sender -->
+<div id="Sender" class="w3-container w3-border Tab" style="display:none">
+
+	<!-- the title -->
+	<head>
+		<title>Photo Sender</title>
+		<!-- image size -->
+		<style>
+			img { max-width: 300px; max-height: 300px; margin: 10px; border: 1px solid black; }
+		</style>
+	</head>
+
+	<body style="background-color:slateblue;">
+
+		<!-- font size + Greeting -->
+			<h1 style="font: 35px Courier New; color:white; font: 30px Lucida Handwriting, cursive; border: 4px solid white;"> Welcome to Photo Sender! Follow the instuctions below...</h1>
+	
+			<!-- Info Paragraph -->
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Welcome! Select a picture or pictures from your photo album you wish to send.</p>
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Click the "Upload" button when you are ready to send the photo or photos.</p>
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Please ignore the login option, as it is reserved for the administrator.</p>
+			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Thank you for using Photo Sender! Have a Wonderful day!</p>
+
+		<!-- Photo Submiter -->
+		<div class="w3-display-bottommiddle w3-large w3-container w3-padding-16 w3-white">
+			<form method="post" enctype="multipart/form-data">
+				<label for="all_photos">Choose a photo:</label>
+				<input type="file" id="all_photos" name="photo" accept="image/*" required>
+				<input type="submit" value="Upload">
+			</form> 
+
+			<!-- Dictionary for all photos-->
+				<script> 
+					// Get the dictionary of uploaded photos from the server
+					fetch('/all_photos')
+						.then(response => response.json()) 
+						.then(photos => { 
+			
+						// Display each photo in the dictionary 
+						for (let fileName in all_photos) { 
+							let data = all_photos[fileName]; 
+							let url = `data:image/jpeg;base64,${data}`;
+							let img = document.createElement('img'); 
+							img.src= url;
+							document.getElementById('all_photos').appendChild(img); 
+						} 
+					}); 
+				</script>
+		</div>
+	</body>	
+</div>
+
+<!-- All photos in the dictionary-->
+<div id="Photos" class="w3-container w3-border Tab" style="display:none"> 
+	<head>
+		<title>Photos in Slide</title>
+	</head>
+	<body style="background-color:slateblue;">
+		<h1 style="font: 35px Courier New; color:white; border: 4px solid white;"> All Photos</h1>
+		
+		<div id="all_photos">
+		<!-- Display uploaded photos here -->
+		</div>
+
+		<!-- Photo Submiter -->
+		<div class="w3-display-bottommiddle w3-large w3-container w3-padding-16 w3-white">
+			<form method="post" enctype="multipart/form-data">
+				<label for="slide_photos">Choose a photo:</label>
+				<input type="file" id="slide_photos" name="photo" accept="image/*" required>
+				<input type="submit" value="Upload">
+			</form> 
+	</body>
+</div>
+
+<!-- Back to Guest View -->
+	<div id="GuestViewSender" class="w3-container w3-border Tab" style="display:none">
+		<body>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+      <a style="color:white; font: 45px Lucida Handwriting, cursive;" href="index.html"> Here to Return to User Guest Veiw</a> 
+		</body>	
+	</div>
+
+<!-- hides tabs + colors selected tab -->
+<script>
+function OpenTab(evt, tabName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("Tab");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-purple", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " w3-purple";
+}
+</script>
+</html>
