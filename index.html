@@ -41,11 +41,11 @@
 
 			<!-- Photo Submiter -->
 			<div class="w3-display-bottommiddle w3-large w3-container w3-padding-16 w3-white">
-				 <form action="upload.php" method="POST" enctype="multipart/form-data">
-   				 <input type="file" name="imageFile" accept="image/*" required>
-    				<input type="submit" value="Upload">
-					</form>
-					
+				 <form action="gallery.php" method="POST" enctype="multipart/form-data">
+   			 <input type="file" name="imageFile" accept="image/*" required>
+    			<input type="submit" value="Submit">
+  			</form>
+
 					<?php
 						$targetDir = "uploads/";
 						$targetFile = $targetDir . basename($_FILES["imageFile"]["name"]);
