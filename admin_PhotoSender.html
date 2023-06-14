@@ -133,67 +133,40 @@
 		<!-- Display uploaded photos here -->
 		</div>
 
-		<!- Drag & Drop Images -->
-		 <style>
-    #dropzone {
-      width: 400px;
-      height: 400px;
-      border: 2px dashed #ccc;
-      text-align: center;
-      padding: 20px;
-      margin: 20px auto;
-    }
+    <!- Uploaded file -->
+  	<?php
+  		$imageFiles = glob("uploads/*.*");
+  		foreach ($imageFiles as $image) {
+     	 echo '<div>';
+     	 echo '<img src="' . $image . '" alt="Uploaded Image" width="300" height="300">';
+     	 echo '<a href="' . $image . '" download>Download</a>';
+     	 echo '<button onclick="deleteImage(\'' . $image . '\')">Delete</button>';
+    	  echo '</div>';
+  		}
+  	?>
 
-    #desktop {
-      width: 400px;
-      height: 400px;
-      border: 2px solid #ccc;
-      margin: 20px auto;
-    }
-  </style>
-
- <div id="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)">
-    <p>Drag an image here to upload and drop it on the desktop</p>
-    <input type="file" id="fileInput" style="display: none;" onchange="uploadFile(event)">
-  </div>
-  <div id="desktop" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-
-  <script>
-    function allowDrop(event) {
-      event.preventDefault();
-    }
-
-    function uploadFile(event) {
-      var file = event.target.files[0];
-      var reader = new FileReader();
-
-      reader.onload = function (e) {
-        var img = document.createElement("img");
-        img.src = e.target.result;
-        img.draggable = true;
-        img.addEventListener("dragstart", function (e) {
-          e.dataTransfer.setData("text/plain", e.target.id);
-        });
-        document.getElementById("desktop").appendChild(img);
-      };
-
-      reader.readAsDataURL(file);
-    }
-
-    function drop(event) {
-      event.preventDefault();
-      var data = event.dataTransfer.getData("text/plain");
-      var imgElement = document.getElementById(data);
-      event.target.appendChild(imgElement);
-    }
-  </script>
+ 	 <script>
+  	  function deleteImage(imagePath) {
+    	  if (confirm("Are you sure you want to delete this image?")) {
+      	  var xhr = new XMLHttpRequest();
+      	  xhr.open("POST", "delete.php", true);
+      	  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      	  xhr.onreadystatechange = function () {
+       	   if (xhr.readyState === 4 && xhr.status === 200) {
+         	   alert(xhr.responseText);
+          	  location.reload(); // Refresh the page after deletion
+       	   }
+      	  };
+     	   xhr.send("imagePath=" + encodeURIComponent(imagePath));
+    	  }
+   	 }
+  	</script>
 	</body>
 </div>
 
 
 <!-- Back to Guest View -->
 	<div id="BackToGuestView" class="w3-container w3-border Tab" style="display:none">	
-
 		<body style="background-color:slateblue;">
 			<br></br>
 			<br></br>
