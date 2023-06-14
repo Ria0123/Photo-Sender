@@ -93,31 +93,23 @@
 			<p style="color:white; font: 20px Lucida Handwriting, cursive;">Thank you for using Photo Sender! Have a Wonderful day!</p>
 
 		<!-- Photo Submiter -->
-		<div class="w3-display-bottommiddle w3-large w3-container w3-padding-16 w3-white">
-			<form method="post" enctype="multipart/form-data">
-				<label for="all_photos">Choose a photo:</label>
-				<input type="file" id="all_photos" name="photo" accept="image/*" required>
-				<input type="submit" value="Upload">
-			</form> 
+			<div class="w3-display-bottommiddle w3-large w3-container w3-padding-16 w3-white">
+				 <form action="upload.php" method="POST" enctype="multipart/form-data">
+   				 <input type="file" name="imageFile" accept="image/*" required>
+    				<input type="submit" value="Upload">
+					</form>
+					
+					<?php
+						$targetDir = "uploads/";
+						$targetFile = $targetDir . basename($_FILES["imageFile"]["name"]);
 
-			<!-- Dictionary for all photos-->
-				<script> 
-					// Get the dictionary of uploaded photos from the server
-					fetch('/all_photos')
-						.then(response => response.json()) 
-						.then(photos => { 
-			
-						// Display each photo in the dictionary 
-						for (let fileName in all_photos) { 
-							let data = all_photos[fileName]; 
-							let url = `data:image/jpeg;base64,${data}`;
-							let img = document.createElement('img'); 
-							img.src= url;
-							document.getElementById('all_photos').appendChild(img); 
-						} 
-					}); 
-				</script>
-		</div>
+						if (move_uploaded_file($_FILES["imageFile"]["tmp_name"], $targetFile)) {
+  					  echo "Image uploaded successfully!";
+						} else {
+  					  echo "Image upload failed.";
+						}
+					?>
+			</div>
 	</body>	
 </div>
 
