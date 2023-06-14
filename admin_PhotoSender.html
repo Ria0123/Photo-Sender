@@ -113,7 +113,7 @@
 	</body>	
 </div>
 
-<!-- All photos in the dictionary-->
+<!-- All photos -->
 <div id="Photos" class="w3-container w3-border Tab" style="display:none"> 
 	<head>
 		<title>Photos in Slide</title>
@@ -121,20 +121,16 @@
 	<body style="background-color:slateblue;">
 		<h1 style="font: 35px Courier New; color:white; border: 4px solid white;"> All Photos</h1>
 		
-		<div id="all_photos">
-		<!-- Display uploaded photos here -->
-		</div>
-
     <!- Uploaded file -->
   	<?php
-  		$imageFiles = glob("uploads/*.*");
+ 			$imageFiles = glob("uploads/*.*");
   		foreach ($imageFiles as $image) {
-     	 echo '<div>';
-     	 echo '<img src="' . $image . '" alt="Uploaded Image" width="300" height="300">';
-     	 echo '<a href="' . $image . '" download>Download</a>';
-     	 echo '<button onclick="deleteImage(\'' . $image . '\')">Delete</button>';
-    	  echo '</div>';
-  		}
+      	echo '<div>';
+     		echo '<img src="' . $image . '" alt="Uploaded Image" width="300" height="300">';
+      	echo '<a href="' . $image . '" download>Download</a>';
+      	echo '<a href="delete.php?image=' . urlencode($image) . '">Delete</a>';
+     	 	echo '</div>';
+ 			}
   	?>
 
  	 <script>
